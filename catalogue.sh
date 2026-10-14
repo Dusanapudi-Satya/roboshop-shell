@@ -1,4 +1,5 @@
 #!/bin/bash
+SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
