@@ -64,7 +64,8 @@ npm install
 VALIDATE $? "Installing dependencies"
 
 # use absolute path , because catalogue.service exists there
-cp catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
+cp /home/ec2-user/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
+#cp catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
 
 VALIDATE $? "Copying catalogue service file"
 
