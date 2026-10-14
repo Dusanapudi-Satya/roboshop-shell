@@ -87,6 +87,6 @@ dnf install mongodb-mongosh -y &>> $LOG_FILE
 VALIDATE $? "installing mongodb-client"
 
 # mongosh --host mongodb.satyadaws.online </app/db/master-data.js
-mongosh --host MONGODB_HOST </app/db/master-data.js &>> $LOG_FILE
+mongosh --host $MONGODB_HOST </app/db/master-data.js &>> $LOG_FILE
 VALIDATE $? "Loading catalogue data in to mongodb "
 
