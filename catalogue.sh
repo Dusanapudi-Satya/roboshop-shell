@@ -79,7 +79,7 @@ VALIDATE $? " enabling catalogue "
 systemctl start catalogue &>> $LOG_FILE
 VALIDATE $? "starting catalogue"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
+cp /home/ec2-user/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
 VALIDATE $? "copying mongo repo file"
 
 # install mongodb-client
