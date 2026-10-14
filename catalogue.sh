@@ -8,7 +8,7 @@ ID=$(id -u)
 echo "script name: $0"
 TIMESTAMP=$( date +%F-%H-%M-%S)
 LOG_FILE="/tmp/$0-$TIMESTAMP.log"
-
+MONGODB_HOST=mongodb.satyadaws.online
 echo "script started executing at $TIMESTAMP" &>> $LOG_FILE
 VALIDATE(){
     if [ $1 -ne 0 ]
@@ -54,26 +54,28 @@ npm install
 VALIDATE $? "Installing dependencies"
 
 # use absolute path , because catalogue.service exists there
-cp C:/Users/satya/devops/repos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service
+cp catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
 
+VALIDATE $? "Copying catalogue service file"
 
+systemctl daemon-reload &>> $LOG_FILE
 
+VALIDATE $? "catalogue daemon reload"
 
+systemctl enable catalogue &>> $LOG_FILE
+VALIDATE $? " enabling catalogue "
 
+systemctl start catalogue &>> $LOG_FILE
+VALIDATE $? "starting catalogue"
 
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
+VALIDATE $? "copying mongo repo file"
 
+# install mongodb-client
+dnf install mongodb-mongosh -y &>> $LOG_FILE
+VALIDATE $? "installing mongodb-client"
 
-
-
-
-
-
-
-
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>> $LOG_FILE
-VALIDATE $? "Remote access to mongodb "
-
-# Restart the service to make the changes effected
-systemctl restart mongod &>> $LOG_FILE
-VALIDATE $? " restarting mongodb "
+# mongosh --host mongodb.satyadaws.online </app/db/master-data.js
+mongosh --host MONGODB_HOST </app/db/master-data.js &>> $LOG_FILE
+VALIDATE $? "Loading catalogue data in to mongodb "
 

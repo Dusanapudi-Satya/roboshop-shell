@@ -24,7 +24,7 @@ then
     echo -e " $R Error: Please run with root access $N "
     exit 1 # you can give non zero
 else
-    echo " you are a root user , proceed to install"
+    echo " you are a root user , proceed to configure"
     # exit 0 , means success
 fi
 cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
