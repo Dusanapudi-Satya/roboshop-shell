@@ -26,7 +26,7 @@ then
     echo -e " $R Error: Please run with root access $N "
     exit 1 # you can give non zero
 else
-    echo " you are a root web , proceed to configure"
+    echo " you are a root User , proceed to configure"
     # exit 0 , means success
 fi
 dnf module disable nginx -y
@@ -57,7 +57,7 @@ unzip /tmp/frontend.zip
 VALIDATE $? "Unzipping web "
 
 cp /home/ec2-user/roboshop-shell/nginx.conf /etc/systemd/system/nginx.conf 
-VALIDATE $? Copied Roboshop reverse proxy config file"
+VALIDATE $? "Copied Roboshop reverse proxy config file"
 
 systemctl restart nginx 
 VALIDATE $? "Restarted nginx"
