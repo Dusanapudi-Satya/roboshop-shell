@@ -9,7 +9,7 @@ ID=$(id -u)
 echo "script name: $0"
 TIMESTAMP=$( date +%F-%H-%M-%S)
 LOG_FILE="/tmp/$0-$TIMESTAMP.log"
-MONGODB_HOST=mongodb.satyadaws.online
+USER_HOST=user.satyadaws.online
 echo "script started executing at $TIMESTAMP" &>> $LOG_FILE
 VALIDATE(){
     if [ $1 -ne 0 ]

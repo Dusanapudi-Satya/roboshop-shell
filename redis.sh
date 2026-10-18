@@ -9,8 +9,13 @@ ID=$(id -u)
 echo "script name: $0"
 TIMESTAMP=$( date +%F-%H-%M-%S)
 LOG_FILE="/tmp/$0-$TIMESTAMP.log"
-MONGODB_HOST=mongodb.satyadaws.online
-echo "script started executing at $TIMESTAMP" &>> $LOG_FILE
+#instead of writing VALIDATE function everywhere we can use exec
+#if any error occurs or echo statement everything(&) will go into LOG_FILE
+# Log will not appear in terminal, usecases are: when we schedule scripts
+# which are running in background , in that case we can use it since user will not execute the #scripts
+exec &>$LOG_FILE
+REDIS_HOST=redis.satyadaws.online
+echo "script started executing at $TIMESTAMP"
 VALIDATE(){
     if [ $1 -ne 0 ]
     then 
@@ -29,25 +34,25 @@ else
     echo " you are a root user , proceed to configure"
     # exit 0 , means success
 fi
-dnf module disable redis -y &>> $LOG_FILE
+dnf module disable redis -y 
 VALIDATE $? "Disabling redis"
 
-dnf module enable redis:7 -y &>> $LOG_FILE
+dnf module enable redis:7 -y 
 VALIDATE $? "Enabling redis version 7"
 
-dnf install redis -y &>> $LOG_FILE
+dnf install redis -y 
 VALIDATE $? "Installing redis"
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf &>> $LOG_FILE
-VALIDATE $? "Remote access to mongodb"
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf 
+VALIDATE $? "allowing remote connection "
 
-sed -i 's/yes/no/g' /etc/redis/redis.conf &>> $LOG_FILE
+sed -i 's/yes/no/g' /etc/redis/redis.conf 
 VALIDATE $? "Disabling protected mode"
 
-systemctl enable redis &>> $LOG_FILE
+systemctl enable redis 
 VALIDATE $? "Enabling redis"
 
-systemctl start redis &>> $LOG_FILE
+systemctl start redis 
 VALIDATE $? "Starting redis"
 
 
