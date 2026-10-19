@@ -7,6 +7,5 @@ Environment=CATALOGUE_HOST=catalogue.satyadaws.online
 Environment=CATALOGUE_PORT=8080
 ExecStart=/usr/bin/node /app/server.js
 SyslogIdentifier=cart
-
 [Install]
 WantedBy=multi-user.target
