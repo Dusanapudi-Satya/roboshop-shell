@@ -37,8 +37,15 @@ fi
 dnf install python3 gcc python3-devel -y &>> $LOG_FILE
 VALIDATE $? "Installing python "
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOG_FILE
-VALIDATE $? "Adding application user"
+# useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOG_FILE
+id roboshop
+if [ $? -ne 0]
+then
+    useradd roboshop
+    VALIDATE $? "Creating Roboshop User"
+else
+    echo -e "Roboshop user already exists .. $Y Skipping $N"
+fi
 
  # -p : if directory exists it will not create otherwise it will create
 # -p, --parents no error if existing, make parent directories as needed
