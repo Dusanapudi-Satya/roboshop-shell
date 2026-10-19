@@ -66,6 +66,9 @@ VALIDATE $? "Installing dependencies"
 # Grant permissions to roboshop user
 chown -R roboshop:roboshop /app &>> "$LOG_FILE"
 VALIDATE $? "Setting permissions for /app"
+# Copy the service file to systemd directory
+cp "/home/ec2-user/roboshop-shell/catalogue.service" /etc/systemd/system/catalogue.service &>> "$LOG_FILE"
+VALIDATE $? "Copying catalogue service file"
 
 systemctl daemon-reload &>> "$LOG_FILE"
 VALIDATE $? "catalogue daemon reload"
