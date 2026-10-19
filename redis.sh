@@ -34,13 +34,14 @@ else
     echo " you are a root user , proceed to configure"
     # exit 0 , means success
 fi
+
 dnf module disable redis -y 
 VALIDATE $? "Disabling redis"
 
 dnf module enable redis:7 -y 
 VALIDATE $? "Enabling redis version 7"
 
-dnf install redis -y 
+dnf install redis -y  
 VALIDATE $? "Installing redis"
 
 #sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf 
