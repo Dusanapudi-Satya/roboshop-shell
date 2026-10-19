@@ -2,11 +2,9 @@
 Description = Cart Service
 [Service]
 User=roboshop
-// highlight-start
 Environment=REDIS_HOST=redis.satyadaws.online
 Environment=CATALOGUE_HOST=catalogue.satyadaws.online
 Environment=CATALOGUE_PORT=8080
-// highlight-end
 ExecStart=/usr/bin/node /app/server.js
 SyslogIdentifier=cart
 
