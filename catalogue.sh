@@ -40,7 +40,7 @@ VALIDATE $? " Installing nodejs "
 
 # useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOG_FILE
 id roboshop
-if [ $? -ne 0]
+if [ $? -ne 0 ]
 then
     useradd roboshop
     VALIDATE $? "Creating Roboshop User"
@@ -51,15 +51,15 @@ fi
 mkdir -p /app &>> $LOG_FILE
 VALIDATE $? "Creating app directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $LOG_FILE
 VALIDATE $? "Downloading catalogue application "
 cd /app 
-unzip -o /tmp/catalogue.zip
+unzip -o /tmp/catalogue.zip &>> $LOG_FILE
 VALIDATE $? "Unzipping catalogue application "
 
 
 cd /app 
-npm install 
+npm install &>> $LOG_FILE
 
 VALIDATE $? "Installing dependencies"
 
