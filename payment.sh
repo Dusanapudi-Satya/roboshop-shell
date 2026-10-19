@@ -51,7 +51,7 @@ VALIDATE $? "Downloading payment app "
 cd /app
 VALIDATE $? "Moving to app directory"
 
-unzip /tmp/payment.zip
+unzip -o /tmp/payment.zip
 VALIDATE $? "Unzipping payment"
 
 cd /app 
@@ -59,6 +59,9 @@ VALIDATE $? "Moving to app directory"
 
 pip3 install -r requirements.txt
 VALIDATE $? "Installing dependencies"
+
+cp /home/ec2-user/roboshop-shell/payment.service /etc/systemd/system/payment.service &>> $LOG_FILE
+VALIDATE $? "Copying payment service file"
 
 systemctl daemon-reload 
 VALIDATE $? "daemon-reload"
