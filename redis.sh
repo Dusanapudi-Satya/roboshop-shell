@@ -13,7 +13,7 @@ LOG_FILE="/tmp/$0-$TIMESTAMP.log"
 #if any error occurs or echo statement everything(&) will go into LOG_FILE
 # Log will not appear in terminal, usecases are: when we schedule scripts
 # which are running in background , in that case we can use it since user will not execute the #scripts
-exec &>$LOG_FILE
+#exec &>$LOG_FILE
 REDIS_HOST=redis.satyadaws.online
 echo "script started executing at $TIMESTAMP"
 VALIDATE(){
@@ -43,10 +43,12 @@ VALIDATE $? "Enabling redis version 7"
 dnf install redis -y 
 VALIDATE $? "Installing redis"
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf 
+#sed -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf 
+sed -i 's/^bind 127.0.0.1/bind 0.0.0.0/' /etc/redis/redis.conf &>>"$LOG_FILE"
 VALIDATE $? "allowing remote connection "
 
-sed -i 's/yes/no/g' /etc/redis/redis.conf 
+sed -i 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf &>>"$LOG_FILE"
+#sed -i 's/yes/no/g' /etc/redis/redis.conf 
 VALIDATE $? "Disabling protected mode"
 
 systemctl enable redis 
@@ -55,4 +57,4 @@ VALIDATE $? "Enabling redis"
 systemctl restart redis 
 VALIDATE $? "restarting redis"
 
-
+echo -e "${G}Redis setup completed successfully.${N}"
