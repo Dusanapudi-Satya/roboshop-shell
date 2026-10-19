@@ -1,14 +1,10 @@
 [Unit]
 Description=Shipping Service
-
 [Service]
 User=roboshop
-// highlight-start
 Environment=CART_ENDPOINT=cart.satyadaws.online:8080
 Environment=DB_HOST=mysql.satyadaws.online
-// highlight-end
-ExecStart=/bin/java -jar /app/shipping.jar
+ExecStart=/usr/bin/java -jar /app/shipping.jar
 SyslogIdentifier=shipping
-
 [Install]
 WantedBy=multi-user.target
