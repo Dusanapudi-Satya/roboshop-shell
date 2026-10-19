@@ -52,7 +52,7 @@ VALIDATE $? "Disabling protected mode"
 systemctl enable redis 
 VALIDATE $? "Enabling redis"
 
-systemctl start redis 
-VALIDATE $? "Starting redis"
+systemctl restart redis 
+VALIDATE $? "restarting redis"
 
 
