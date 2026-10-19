@@ -29,6 +29,13 @@ else
     echo " you are a root user , proceed to configure"
     # exit 0 , means success
 fi
+
+curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>> $LOG_FILE
+VALIDATE $? "Downloading erlang script"
+
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>> $LOG_FILE
+VALIDATE $? "Downloading rabbitmq script"
+
 dnf install rabbitmq-server -y &>> $LOG_FILE
 VALIDATE $? "Installing rabbitmq server"
 
