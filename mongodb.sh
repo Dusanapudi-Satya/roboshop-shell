@@ -46,4 +46,5 @@ VALIDATE $? "Remote access to mongodb "
 # Restart the service to make the changes effected
 systemctl restart mongod &>> $LOG_FILE
 VALIDATE $? " restarting mongodb "
+echo -e "${G} Mongodb setup completed successfully.${N}"
 

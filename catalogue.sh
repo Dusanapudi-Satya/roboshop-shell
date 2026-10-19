@@ -89,4 +89,5 @@ VALIDATE $? "installing mongodb-client"
 # mongosh --host mongodb.satyadaws.online </app/db/master-data.js
 mongosh --host $MONGODB_HOST </app/db/master-data.js &>> $LOG_FILE
 VALIDATE $? "Loading catalogue data in to mongodb "
+echo -e "${G} Catalogue setup completed successfully.${N}"
 

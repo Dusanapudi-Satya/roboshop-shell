@@ -77,5 +77,6 @@ VALIDATE $? " enabling cart "
 
 systemctl start cart &>> $LOG_FILE
 VALIDATE $? "starting cart"
+echo -e "${G} Cart setup completed successfully.${N}"
 
 

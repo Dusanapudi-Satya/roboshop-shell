@@ -77,4 +77,5 @@ VALIDATE $? " enabling user "
 systemctl start user &>> $LOG_FILE
 VALIDATE $? "starting user"
 
+echo -e "${G} User setup completed successfully.${N}"
 
