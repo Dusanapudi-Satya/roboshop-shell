@@ -62,6 +62,9 @@ cd /app
 npm install &>> $LOG_FILE
 
 VALIDATE $? "Installing dependencies"
+# Grant permissions to roboshop user
+chown -R roboshop:roboshop /app &>> "$LOG_FILE"
+VALIDATE $? "Setting permissions for /app"
 
 # use absolute path , because catalogue.service exists there
 cp /home/ec2-user/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
