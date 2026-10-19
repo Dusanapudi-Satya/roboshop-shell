@@ -35,6 +35,7 @@ useradd --system --home /app --shell /sbin/nologin --comment "roboshop system us
 VALIDATE $? "Adding application user"
   
  # -p : if directory exists it will not create otherwise it will create
+# -p, --parents no error if existing, make parent directories as needed
 mkdir -p /app &>> $LOG_FILE
 VALIDATE $? "Creating app directory"
 

@@ -1,0 +1,45 @@
+#!/bin/bash
+SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+N="\e[0m"
+# step 1: check if the user has root access to install packages
+ID=$(id -u)
+echo "script name: $0"
+TIMESTAMP=$( date +%F-%H-%M-%S)
+LOG_FILE="/tmp/$0-$TIMESTAMP.log"
+USER_HOST=user.satyadaws.online
+echo "script started executing at $TIMESTAMP" &>> $LOG_FILE
+VALIDATE(){
+    if [ $1 -ne 0 ]
+    then 
+        echo -e " $2 .. $R Failed $N"
+        exit 1
+    else
+        echo -e " $2 .. $G SUCCESS $N"
+    fi    
+
+}
+if [ $ID -ne 0 ];
+then 
+    echo -e " $R Error: Please run with root access $N "
+    exit 1 # you can give non zero
+else
+    echo " you are a root user , proceed to configure"
+    # exit 0 , means success
+fi
+dnf install rabbitmq-server -y &>> $LOG_FILE
+VALIDATE $? "Installing rabbitmq server"
+
+systemctl enable rabbitmq-server &>> $LOG_FILE
+VALIDATE $? "Enabling rabbitmq server"
+
+systemctl start rabbitmq-server &>> $LOG_FILE
+VALIDATE $? "Starting rabbitmq server"
+
+rabbitmqctl add_user roboshop roboshop123 &>> $LOG_FILE
+VALIDATE $? "Creating user"
+
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOG_FILE
+VALIDATE $? "Setting permissions"
