@@ -1,5 +1,6 @@
 #!/bin/bash
 SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
+SCRIPT_NAME=$(basename "$0")
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -40,7 +41,7 @@ VALIDATE $? " Installing nodejs "
 
 # useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOG_FILE
 id roboshop
-if [ $? -ne 0]
+if [ $? -ne 0 ]
 then
     useradd roboshop
     VALIDATE $? "Creating Roboshop User"
@@ -51,14 +52,14 @@ fi
 mkdir -p /app &>> $LOG_FILE
 VALIDATE $? "Creating app directory"
 
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip 
+curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip &>> $LOG_FILE
 VALIDATE $? "Downloading user application "
 cd /app 
-unzip -o /tmp/user.zip
+unzip -o /tmp/user.zip &>> $LOG_FILE
 VALIDATE $? "Unzipping user application "
 
 cd /app 
-npm install 
+npm install &>> $LOG_FILE
 VALIDATE $? "Installing dependencies"
 
 # use absolute path , because user.service exists there
@@ -76,6 +77,10 @@ VALIDATE $? " enabling user "
 
 systemctl start user &>> $LOG_FILE
 VALIDATE $? "starting user"
+# Verify port 8080 is running
+sleep 2
+netstat -lntp | grep 8080 &>> $LOG_FILE
+VALIDATE $? "User service listening on port 8080"
 
 echo -e "${G} User setup completed successfully.${N}"
 
