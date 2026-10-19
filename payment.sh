@@ -45,31 +45,31 @@ VALIDATE $? "Adding application user"
 mkdir -p /app &>> $LOG_FILE
 VALIDATE $? "Creating app directory"
 
-curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip 
+curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip &>> $LOG_FILE
 VALIDATE $? "Downloading payment app "
-
+ 
 cd /app
 VALIDATE $? "Moving to app directory"
 
-unzip -o /tmp/payment.zip
+unzip -o /tmp/payment.zip &>> $LOG_FILE
 VALIDATE $? "Unzipping payment"
 
 cd /app 
 VALIDATE $? "Moving to app directory"
 
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt &>> $LOG_FILE
 VALIDATE $? "Installing dependencies"
 
 cp /home/ec2-user/roboshop-shell/payment.service /etc/systemd/system/payment.service &>> $LOG_FILE
 VALIDATE $? "Copying payment service file"
 
-systemctl daemon-reload 
+systemctl daemon-reload &>> $LOG_FILE
 VALIDATE $? "daemon-reload"
 
-systemctl enable payment 
+systemctl enable payment &>> $LOG_FILE
 VALIDATE $? "Enabling payment"
 
-systemctl start payment
+systemctl start payment &>> $LOG_FILE
 VALIDATE $? "Starting payment"
 
 
