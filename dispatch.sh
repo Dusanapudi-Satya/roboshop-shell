@@ -80,5 +80,5 @@ VALIDATE $? "Starting dispatch"
 systemctl status dispatch &>>"$LOG_FILE"
 VALIDATE $? "Dispatch status is"
 
-journalctl -u dispatch -f &>>"$LOG_FILE"
+journalctl -u dispatch -n 20 &>>"$LOG_FILE"
 VALIDATE $? "Recent logs are:"
