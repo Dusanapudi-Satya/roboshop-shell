@@ -44,7 +44,13 @@ VALIDATE $? "Enabling rabbitmq server"
 
 systemctl start rabbitmq-server &>> $LOG_FILE
 VALIDATE $? "Starting rabbitmq server"
-
+#check whether the RabbitMQ user exists before attempting to create it
+sudo rabbitmqctl list_users | grep -w roboshop >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    rabbitmqctl add_user roboshop roboshop123
+    else
+        echo -e "$Y RabbitMQ user already exists $N"
+fi
 rabbitmqctl add_user roboshop roboshop123 &>> $LOG_FILE
 VALIDATE $? "Creating user"
 
