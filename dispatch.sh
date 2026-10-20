@@ -65,6 +65,9 @@ VALIDATE $? "Moving to app directory"
 go build -o dispatch . &>>"$LOG_FILE"
 VALIDATE $? "Installing dependencies"
 
+cp /home/ec2-user/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service
+VALIDATE $? "Copying dispatch service file"
+
 systemctl daemon-reload &>>"$LOG_FILE"
 VALIDATE $? "daemon-reload"
 
