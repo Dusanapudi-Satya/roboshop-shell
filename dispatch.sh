@@ -45,9 +45,10 @@ else
     echo -e "Roboshop user already exists .. $Y Skipping $N"
 fi
 
-
-mkdir /app
-VALIDATE $? "Creating application dir"
+ # -p : if directory exists it will not create otherwise it will create
+# -p, --parents no error if existing, make parent directories as needed
+mkdir -p /app &>> $LOG_FILE
+VALIDATE $? "Creating app directory"
 
 curl -L -o /tmp/dispatch.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/dispatch-v4.zip &>>"$LOG_FILE"
 VALIDATE $? "Downloading dispatch application"
