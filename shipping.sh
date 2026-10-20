@@ -65,8 +65,9 @@ VALIDATE $? " Installing dependencies "
 mv target/shipping-1.0.jar shipping.jar &>> $LOG_FILE
 VALIDATE $? " Renaming jar file "
 
-cp /home/ec2-user/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOG_FILE
-VALIDATE $? "copying shipping service file"
+#cp /home/ec2-user/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOG_FILE
+cp "${SCRIPT_DIR}/shipping.service" /etc/systemd/system/shipping.service &>>"$LOG_FILE"
+VALIDATE $? "Copying shipping service "
 
 systemctl daemon-reload
 VALIDATE $? "daemon-reload"
