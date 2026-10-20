@@ -1,10 +1,14 @@
+sudo tee /etc/systemd/system/shipping.service > /dev/null <<'EOF'
 [Unit]
 Description=Shipping Service
+
 [Service]
 User=roboshop
 Environment=CART_ENDPOINT=cart.satyadaws.online:8080
 Environment=DB_HOST=mysql.satyadaws.online
-ExecStart=/usr/bin/java -jar /app/shipping.jar
+ExecStart=/usr/bin/java -Dspring.datasource.url="jdbc:mysql://mysql.satyadaws.online:3306/cities?allowPublicKeyRetrieval=true&useSSL=false" -Dspring.datasource.username=root -Dspring.datasource.password=RoboShop@1 -jar /app/shipping.jar
 SyslogIdentifier=shipping
+
 [Install]
 WantedBy=multi-user.target
+EOF
