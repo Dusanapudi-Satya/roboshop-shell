@@ -56,7 +56,7 @@ VALIDATE $? "Downloading dispatch application"
 cd /app &>>"$LOG_FILE"
 VALIDATE $? "Moving to app directory"
 
-unzip /tmp/dispatch.zip &>>"$LOG_FILE"
+unzip -o /tmp/dispatch.zip &>>"$LOG_FILE"
 VALIDATE $? "Unzipping dispatch app"
 
 cd /app &>>"$LOG_FILE"
