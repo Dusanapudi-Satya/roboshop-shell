@@ -56,8 +56,10 @@ VALIDATE $? "Moving to nginx/html directory"
 unzip /tmp/frontend.zip
 VALIDATE $? "Unzipping web "
 
-cp /home/ec2-user/roboshop-shell/nginx.conf /etc/systemd/system/nginx.conf 
-VALIDATE $? "Copied Roboshop reverse proxy config file"
+#cp /home/ec2-user/roboshop-shell/nginx.conf /etc/systemd/system/nginx.conf 
+
+cp ${SCRIPT_DIR}/nginx.conf /etc/nginx/nginx.conf &>>"$LOG_FILE"
+VALIDATE $? "Copying nginx reverse proxy config"
 
 systemctl restart nginx 
 VALIDATE $? "Restarted nginx"
