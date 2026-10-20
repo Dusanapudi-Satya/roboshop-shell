@@ -53,20 +53,19 @@ VALIDATE $? "Creating app directory"
 curl -L -o /tmp/dispatch.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/dispatch-v4.zip &>>"$LOG_FILE"
 VALIDATE $? "Downloading dispatch application"
 
-cd /app
+cd /app &>>"$LOG_FILE"
 VALIDATE $? "Moving to app directory"
 
 unzip /tmp/dispatch.zip &>>"$LOG_FILE"
 VALIDATE $? "Unzipping dispatch app"
 
-cd /app
+cd /app &>>"$LOG_FILE"
 VALIDATE $? "Moving to app directory"
-
 
 go build -o dispatch . &>>"$LOG_FILE"
 VALIDATE $? "Installing dependencies"
 
-cp /home/ec2-user/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service
+cp /home/ec2-user/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service &>>"$LOG_FILE"
 VALIDATE $? "Copying dispatch service file"
 
 systemctl daemon-reload &>>"$LOG_FILE"
