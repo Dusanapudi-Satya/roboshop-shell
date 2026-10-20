@@ -30,10 +30,10 @@ else
     echo " you are a root user , proceed to configure"
     # exit 0 , means success
 fi
-dnf install golang -y
+dnf install golang -y &>>"$LOG_FILE"
 VALIDATE $? "Installing golang"
 
-go version
+go version &>>"$LOG_FILE"
 
 #useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
 id roboshop
@@ -49,33 +49,33 @@ fi
 mkdir /app
 VALIDATE $? "Creating application dir"
 
-curl -L -o /tmp/dispatch.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/dispatch-v4.zip
+curl -L -o /tmp/dispatch.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/dispatch-v4.zip &>>"$LOG_FILE"
 VALIDATE $? "Downloading dispatch application"
 
 cd /app
 VALIDATE $? "Moving to app directory"
 
-unzip /tmp/dispatch.zip
+unzip /tmp/dispatch.zip &>>"$LOG_FILE"
 VALIDATE $? "Unzipping dispatch app"
 
 cd /app
 VALIDATE $? "Moving to app directory"
 
 
-go build -o dispatch .
+go build -o dispatch . &>>"$LOG_FILE"
 VALIDATE $? "Installing dependencies"
 
-systemctl daemon-reload
+systemctl daemon-reload &>>"$LOG_FILE"
 VALIDATE $? "daemon-reload"
 
-systemctl enable dispatch
+systemctl enable dispatch &>>"$LOG_FILE"
 VALIDATE $? "Enabling dispatch"
 
-systemctl start dispatch
+systemctl start dispatch &>>"$LOG_FILE"
 VALIDATE $? "Starting dispatch"
 
-systemctl status dispatch
+systemctl status dispatch &>>"$LOG_FILE"
 VALIDATE $? "Dispatch status is"
 
-journalctl -u dispatch -f
+journalctl -u dispatch -f &>>"$LOG_FILE"
 VALIDATE $? "Recent logs are:"

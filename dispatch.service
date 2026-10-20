@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 User=roboshop
-Environment=AMQP_HOST=<RABBITMQ-SERVER-IPADDRESS>
+Environment=AMQP_HOST=rabbitmq.satyadaws.online
 Environment=AMQP_USER=roboshop
 Environment=AMQP_PASS=roboshop123
 ExecStart=/app/dispatch
