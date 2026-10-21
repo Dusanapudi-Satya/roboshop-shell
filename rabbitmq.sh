@@ -54,8 +54,6 @@ if [ $? -ne 0 ]; then
     else
         echo -e "$Y RabbitMQ user already exists $N"
 fi
-rabbitmqctl add_user roboshop roboshop123 &>> $LOG_FILE
-VALIDATE $? "Creating user"
 
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOG_FILE
 VALIDATE $? "Setting permissions"
