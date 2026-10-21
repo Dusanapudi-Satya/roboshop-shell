@@ -64,6 +64,7 @@ VALIDATE $? "Copying nginx reverse proxy config"
 systemctl restart nginx 
 VALIDATE $? "Restarted nginx"
 
+echo -e "${G} web setup completed successfully.${N}"
 
 
 

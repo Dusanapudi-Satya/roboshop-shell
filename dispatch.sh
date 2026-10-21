@@ -81,3 +81,4 @@ VALIDATE $? "Dispatch status is"
 
 journalctl -u dispatch -n 20 &>>"$LOG_FILE"
 VALIDATE $? "Recent logs are:"
+echo -e "${G} Dispatch setup completed successfully.${N}"

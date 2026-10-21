@@ -40,3 +40,4 @@ VALIDATE $? "Starting mysql-server"
 
 mysql_secure_installation --set-root-pass RoboShop@1
 VALIDATE $? "Setting mysql root password"
+echo -e "${G} Mysql setup completed successfully.${N}"

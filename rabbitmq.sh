@@ -56,3 +56,4 @@ VALIDATE $? "Creating user"
 
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOG_FILE
 VALIDATE $? "Setting permissions"
+echo -e "${G} Rabbitmq setup completed successfully.${N}"

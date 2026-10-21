@@ -79,6 +79,7 @@ VALIDATE $? "Enabling payment"
 systemctl start payment &>> $LOG_FILE
 VALIDATE $? "Starting payment"
 
+echo -e "${G} Payment setup completed successfully.${N}"
 
 
 

@@ -88,3 +88,4 @@ VALIDATE $? "Loading database schema"
 
 systemctl restart shipping &>> "$LOG_FILE"
 VALIDATE $? "Restarting shipping service"
+echo -e "${G} Shipping setup completed successfully.${N}"
