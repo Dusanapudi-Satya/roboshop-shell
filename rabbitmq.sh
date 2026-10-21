@@ -29,7 +29,10 @@ else
     echo " you are a root user , proceed to configure"
     # exit 0 , means success
 fi
-
+ 
+ # Step 7: Configure systemd service
+cp "${SCRIPT_DIR}/rabbitmq.repo" /etc/yum.repos.d/rabbitmq.repo &>> "$LOG_FILE"
+VALIDATE $? "Copying systemd service file"
 curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>> $LOG_FILE
 VALIDATE $? "Downloading erlang script"
 
