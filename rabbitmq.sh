@@ -57,4 +57,6 @@ fi
 
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOG_FILE
 VALIDATE $? "Setting permissions"
+netstat -lntp | grep 5672 &>> $LOG_FILE
+VALIDATE $? "Rabbitmq service listening on port 5672"
 echo -e "${G} Rabbitmq setup completed successfully.${N}"

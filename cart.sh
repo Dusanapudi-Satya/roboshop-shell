@@ -77,6 +77,10 @@ VALIDATE $? " enabling cart "
 
 systemctl start cart &>> $LOG_FILE
 VALIDATE $? "starting cart"
+
+netstat -lntp | grep 8080 &>> $LOG_FILE
+VALIDATE $? "Cart service listening on port 8080"
+
 echo -e "${G} Cart setup completed successfully.${N}"
 
 

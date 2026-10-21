@@ -88,4 +88,6 @@ VALIDATE $? "Loading database schema"
 
 systemctl restart shipping &>> "$LOG_FILE"
 VALIDATE $? "Restarting shipping service"
+netstat -lntp | grep 8080 &>> $LOG_FILE
+VALIDATE $? "Shipping service listening on port 8080"
 echo -e "${G} Shipping setup completed successfully.${N}"

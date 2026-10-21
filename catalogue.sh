@@ -88,5 +88,6 @@ VALIDATE $? "installing mongodb-client"
 
 mongosh --host "$MONGODB_HOST" </app/db/master-data.js &>> "$LOG_FILE"
 VALIDATE $? "Loading catalogue data into mongodb"
-
+netstat -lntp | grep 8080 &>> $LOG_FILE
+VALIDATE $? "Catalogue service listening on port 8080"
 echo -e "${G}Catalogue setup completed successfully.${N}"

@@ -46,5 +46,7 @@ VALIDATE $? "Remote access to mongodb "
 # Restart the service to make the changes effected
 systemctl restart mongod &>> $LOG_FILE
 VALIDATE $? " restarting mongodb "
+netstat -lntp | grep 27017 &>> $LOG_FILE
+VALIDATE $? "MongoDB service listening on port 27017"
 echo -e "${G} Mongodb setup completed successfully.${N}"
 

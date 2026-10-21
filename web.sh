@@ -63,6 +63,8 @@ VALIDATE $? "Copying nginx reverse proxy config"
 
 systemctl restart nginx 
 VALIDATE $? "Restarted nginx"
+netstat -lntp | grep 80 &>> $LOG_FILE
+VALIDATE $? "Web service listening on port 80"
 
 echo -e "${G} web setup completed successfully.${N}"
 

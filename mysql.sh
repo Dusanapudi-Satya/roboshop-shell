@@ -40,4 +40,6 @@ VALIDATE $? "Starting mysql-server"
 
 mysql_secure_installation --set-root-pass RoboShop@1
 VALIDATE $? "Setting mysql root password"
+netstat -lntp | grep 3306 &>> $LOG_FILE
+VALIDATE $? "Mysql service listening on port 3306"
 echo -e "${G} Mysql setup completed successfully.${N}"

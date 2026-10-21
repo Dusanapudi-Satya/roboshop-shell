@@ -78,7 +78,8 @@ VALIDATE $? "Enabling payment"
 
 systemctl start payment &>> $LOG_FILE
 VALIDATE $? "Starting payment"
-
+netstat -lntp | grep 8080 &>> $LOG_FILE
+VALIDATE $? "Payment service listening on port 8080"
 echo -e "${G} Payment setup completed successfully.${N}"
 
 

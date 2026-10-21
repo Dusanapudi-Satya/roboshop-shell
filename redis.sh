@@ -58,4 +58,7 @@ VALIDATE $? "Enabling redis"
 systemctl restart redis 
 VALIDATE $? "restarting redis"
 
+netstat -lntp | grep 6379 &>> $LOG_FILE
+VALIDATE $? "Redis service listening on port 6379"
+
 echo -e "${G}Redis setup completed successfully.${N}"
