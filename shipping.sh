@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Exit on unexpected pipe failures if needed
 set -o pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" && pwd)
@@ -33,9 +32,9 @@ fi
 
 echo "Script started executing at $TIMESTAMP" &>> "$LOG_FILE"
 
-# Step 2: Install Maven
-dnf install maven -y &>> "$LOG_FILE"
-VALIDATE $? "Installing Maven"
+# Step 2: Install Maven and networking tools
+dnf install maven iproute -y &>> "$LOG_FILE"
+VALIDATE $? "Installing Maven and network utilities"
 
 # Step 3: Create roboshop user if not present
 id roboshop &>> "$LOG_FILE"
@@ -66,6 +65,10 @@ VALIDATE $? "Compiling and packaging Maven dependencies"
 mv target/shipping-1.0.jar shipping.jar &>> "$LOG_FILE"
 VALIDATE $? "Renaming jar to shipping.jar"
 
+# Grant ownership of /app to roboshop user
+chown -R roboshop:roboshop /app &>> "$LOG_FILE"
+VALIDATE $? "Setting permissions on /app"
+
 # Step 7: Configure systemd service
 cp "${SCRIPT_DIR}/shipping.service" /etc/systemd/system/shipping.service &>> "$LOG_FILE"
 VALIDATE $? "Copying systemd service file"
@@ -76,9 +79,6 @@ VALIDATE $? "Reloading systemd daemon"
 systemctl enable shipping &>> "$LOG_FILE"
 VALIDATE $? "Enabling shipping service"
 
-systemctl start shipping &>> "$LOG_FILE"
-VALIDATE $? "Starting shipping service"
-
 # Step 8: Database setup and schema load
 dnf install mysql -y &>> "$LOG_FILE"
 VALIDATE $? "Installing MySQL client"
@@ -86,8 +86,25 @@ VALIDATE $? "Installing MySQL client"
 mysql -h mysql.satyadaws.online -uroot -pRoboShop@1 < /app/db/schema.sql &>> "$LOG_FILE"
 VALIDATE $? "Loading database schema"
 
+if [ -f /app/db/app-user.sql ]; then
+    mysql -h mysql.satyadaws.online -uroot -pRoboShop@1 < /app/db/app-user.sql &>> "$LOG_FILE"
+fi
+
+if [ -f /app/db/master-data.sql ]; then
+    mysql -h mysql.satyadaws.online -uroot -pRoboShop@1 < /app/db/master-data.sql &>> "$LOG_FILE"
+fi
+
+# Step 9: Start service and verify port
 systemctl restart shipping &>> "$LOG_FILE"
-VALIDATE $? "Restarting shipping service"
-netstat -lntp | grep 8080 &>> $LOG_FILE
+VALIDATE $? "Starting shipping service"
+
+echo "Waiting for shipping service to bind to port 8080..."
+for i in {1..10}; do
+    ss -lntp | grep -q ':8080\b' && break
+    sleep 2
+done
+
+ss -lntp | grep -q ':8080\b'
 VALIDATE $? "Shipping service listening on port 8080"
-echo -e "${G} Shipping setup completed successfully.${N}"
+
+echo -e "${G}Shipping setup completed successfully.${N}"
