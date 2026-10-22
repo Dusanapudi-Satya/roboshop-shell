@@ -3,50 +3,58 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-# step 1: check if the user has root access to install packages
-ID=$(id -u)
-echo "script name: $0"
-TIMESTAMP=$( date +%F-%H-%M-%S)
-LOG_FILE="/tmp/$0-$TIMESTAMP.log"
 
-echo "script started executing at $TIMESTAMP" &>> $LOG_FILE
+# Step 1: Check root privileges
+ID=$(id -u)
+TIMESTAMP=$(date +%F-%H-%M-%S)
+LOG_FILE="/tmp/mongodb-$TIMESTAMP.log"
+
+echo "Script started executing at $TIMESTAMP" &>> "$LOG_FILE"
+
 VALIDATE(){
-    if [ $1 -ne 0 ]
-    then 
+    if [ $1 -ne 0 ]; then
         echo -e " $2 .. $R Failed $N"
         exit 1
     else
         echo -e " $2 .. $G SUCCESS $N"
-    fi    
-
+    fi
 }
-if [ $ID -ne 0 ];
-then 
+
+if [ "$ID" -ne 0 ]; then
     echo -e " $R Error: Please run with root access $N "
-    exit 1 # you can give non zero
+    exit 1
 else
-    echo " you are a root user , proceed to configure"
-    # exit 0 , means success
+    echo "You are a root user, proceeding with configuration..."
 fi
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
-VALIDATE $? "Copied mongodb.repo is"
 
-dnf install mongodb-org -y &>> $LOG_FILE
-VALIDATE $? "Installing mongodb is"
+# Step 2: Configure repository
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> "$LOG_FILE"
+VALIDATE $? "Copying mongodb.repo"
 
-systemctl enable mongod &>> $LOG_FILE
-VALIDATE $? "Enabling mongodb is"
+# Step 3: Install MongoDB
+dnf install mongodb-org -y &>> "$LOG_FILE"
+VALIDATE $? "Installing MongoDB"
 
-systemctl start mongod &>> $LOG_FILE
-VALIDATE $? "Starting mongodb is"
+# Step 4: Enable and start service
+systemctl enable mongod &>> "$LOG_FILE"
+VALIDATE $? "Enabling MongoDB service"
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>> $LOG_FILE
-VALIDATE $? "Remote access to mongodb "
+systemctl start mongod &>> "$LOG_FILE"
+VALIDATE $? "Starting MongoDB service"
 
-# Restart the service to make the changes effected
-systemctl restart mongod &>> $LOG_FILE
-VALIDATE $? " restarting mongodb "
-netstat -lntp | grep 27017 &>> $LOG_FILE
+# Step 5: Configure remote access
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>> "$LOG_FILE"
+VALIDATE $? "Configuring remote access (bindIp 0.0.0.0)"
+
+# Step 6: Restart service and wait for socket initialization
+systemctl restart mongod &>> "$LOG_FILE"
+VALIDATE $? "Restarting MongoDB"
+
+# Give the daemon 2 seconds to bind to port 27017
+sleep 2
+
+# Step 7: Check listening port using ss (built-in) instead of netstat
+ss -lntp | grep -q 27017
 VALIDATE $? "MongoDB service listening on port 27017"
-echo -e "${G} Mongodb setup completed successfully.${N}"
 
+echo -e "${G}MongoDB setup completed successfully.${N}"
