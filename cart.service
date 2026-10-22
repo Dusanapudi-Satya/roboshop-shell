@@ -1,11 +1,16 @@
 [Unit]
-Description = Cart Service
+Description=Cart Service
+After=network.target
+
 [Service]
 User=roboshop
+WorkingDirectory=/app
 Environment=REDIS_HOST=redis.satyadaws.online
 Environment=CATALOGUE_HOST=catalogue.satyadaws.online
 Environment=CATALOGUE_PORT=8080
 ExecStart=/usr/bin/node /app/server.js
 SyslogIdentifier=cart
+Restart=always
+
 [Install]
 WantedBy=multi-user.target
