@@ -13,5 +13,4 @@ do
     fi
     aws ec2 run-instances --image-id ami-0055977a6e828a4f4 --instance-type t3.micro --security-group-ids sg-0fc80fbc6e913cfb1
 
-
 done
