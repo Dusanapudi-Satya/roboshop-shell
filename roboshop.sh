@@ -1,7 +1,7 @@
 #!/bin/bash
 AMI=ami-0055977a6e828a4f4
 SG_ID=sg-0fc80fbc6e913cfb1
-INSTANCES=("web","mongodb","catalogue","user","cart","redis","mysql","rabbitmq","mysql","dispatch","payment")
+INSTANCES=("web","mongodb","catalogue","user","cart","redis","mysql","rabbitmq","mysql","dispatch","payment","shipping")
 for i in "${INSTANCES[@]}"
 do
     echo "instance is :  $i"
