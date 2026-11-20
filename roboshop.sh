@@ -4,7 +4,7 @@ SG_ID=sg-0fc80fbc6e913cfb1
 INSTANCES=("web" "mongodb" "catalogue" "user" "cart" "redis" "mysql" "rabbitmq" "mysql" "dispatch","payment" "shipping")
 for i in "${INSTANCES[@]}"
 do
-    echo "instance is :  $i"
+    #echo "instance is :  $i"
     if [ $i == mongodb ] || [ $i == mysql ] || [ $i == shipping ] 
     then
     INSTANCE_TYPE=t3.small
