@@ -11,7 +11,7 @@ do
     else
     INSTANCE_TYPE=t3.micro
     fi
-    IPADDRESS=$(aws ec2 run-instances --image-id ami-0055977a6e828a4f4 --instance-type t3.micro --security-group-ids sg-0fc80fbc6e913cfb1 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value="$i"}]' --query "Instances[0].PrivateIpAddress" --output text)
+    IPADDRESS=$(aws ec2 run-instances --image-id ami-0055977a6e828a4f4 --instance-type t3.micro --security-group-ids sg-0fc80fbc6e913cfb1 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query "Instances[0].PrivateIpAddress" --output text)
     echo " $i : $IPADDRESS "
 
 done
