@@ -35,6 +35,7 @@ do
     fi
 
     # 3. Create or update the Route 53 DNS record
+    # UPSERT, if record exists it will edit otherwise it will create (CREATE only creates a record)
     if [ -n "$IPADDRESS" ] && [ "$IPADDRESS" != "None" ]; then
         aws route53 change-resource-record-sets \
         --hosted-zone-id "$ZONE_ID" \
